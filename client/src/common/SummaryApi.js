@@ -1,4 +1,4 @@
-export const baseURL = "http://localhost:3000" // backend server url
+export const baseURL = "https://blinkeet-v2.onrender.com" // backend server url
 
 const SummaryApi = {
     register : {
