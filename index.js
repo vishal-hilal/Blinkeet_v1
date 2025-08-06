@@ -23,7 +23,7 @@ const app = express()
 
 app.set("view engine","ejs")
 app.use(cors({
-    origin: "http://localhost:5173",
+    origin: "https://blinkeet-v1.vercel.app/",
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization']
@@ -60,7 +60,7 @@ app.get('/success', (req, res) => {
   const message = req.query.text || "Payment";
   res.render('success.ejs', { 
     text: message,
-    frontendUrl: 'http://localhost:5173'
+    frontendUrl: 'https://blinkeet-v1.vercel.app'
   });
 });
 
@@ -68,7 +68,7 @@ app.get('/cancel', (req, res) => {
   const message = req.query.text || "Payment";
   res.render('cancel.ejs', { 
     text: message,
-    frontendUrl:'http://localhost:5173'
+    frontendUrl:'https://blinkeet-v1.vercel.app'
  });
 });
 
