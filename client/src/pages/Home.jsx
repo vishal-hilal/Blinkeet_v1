@@ -38,21 +38,18 @@ const Home = () => {
         );
       }
     }, 3000);
-
     return () => clearInterval(interval);
   }, [isTransitioning, mobileBanners.length]);
 
   const handleRedirectProductListpage = (id, cat) => {
     try {
-      const subcategory = subCategoryData.find((sub) => {
-        return sub.category.some((c) => c._id === id);
-      });
-
+      const subcategory = subCategoryData.find((sub) =>
+        sub.category.some((c) => c._id === id)
+      );
       if (!subcategory) {
         toast.error("No subcategories found for this category");
         return;
       }
-
       const url = `/${valideURLConvert(cat)}-${id}/${valideURLConvert(
         subcategory.name
       )}-${subcategory._id}`;
@@ -64,120 +61,130 @@ const Home = () => {
   };
 
   return (
-    <section className="bg-white relative ">
-      <div className="flex mx-auto mt-24 items-start justify-start">
-        <div className="w-full bg-gradient-to-r from-green-50 to-green-100 rounded-2xl overflow-hidden shadow-md">
-          <img
-            src={banner}
-            className="w-full lg:h-[320px] object cover hidden lg:block "
-            alt="banner"
-          />
-
-          <div className="relative w-full aspect-[2/1] lg:hidden overflow-hidden">
-            {mobileBanners.map((bannerImg, index) => (
-              <div
-                key={index}
-                className={`absolute inset-0 transition-all duration-500 ease-in-out ${
-                  index === currentBannerIndex
-                    ? "translate-x-0 opacity-100"
-                    : "translate-x-full opacity-0"
-                }`}
-                style={{ willChange: "transform, opacity" }}
-              >
-                <img
-                  src={bannerImg}
-                  className="w-full h-full object-cover"
-                  alt={`banner ${index + 1}`}
-                  loading={index === 0 ? "eager" : "lazy"}
-                  onError={(e) => {
-                    e.target.onerror = null;
-                    e.target.src = "https://i.postimg.cc/gkWpM52H/banner.png";
-                  }}
-                />
-              </div>
-            ))}
-
-            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10">
-              {mobileBanners.map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => handleBannerChange(index)}
-                  className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                    index === currentBannerIndex
-                      ? "bg-green-600 scale-125 shadow-lg"
-                      : "bg-white/50 hover:bg-white/80"
-                  }`}
-                  aria-label={`Go to slide ${index + 1}`}
-                  disabled={isTransitioning}
-                />
-              ))}
-            </div>
-
-            <div
-              className="absolute inset-y-0 left-0 w-1/3 z-10 cursor-pointer"
-              onClick={() =>
-                handleBannerChange(Math.max(0, currentBannerIndex - 1))
-              }
-            />
-            <div
-              className="absolute inset-y-0 right-0 w-1/3 z-10 cursor-pointer"
-              onClick={() =>
-                handleBannerChange(
-                  Math.min(mobileBanners.length - 1, currentBannerIndex + 1)
-                )
-              }
+    <section className="relative bg-white pt-24">
+      {/* Desktop Banner */}
+      <div className="hidden lg:block">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="rounded-2xl overflow-hidden shadow-md bg-gradient-to-r from-green-50 to-green-100">
+            <img
+              src={banner}
+              className="w-full h-[320px] object-cover"
+              alt="banner"
             />
           </div>
         </div>
       </div>
 
-      <div className="px-4 my-4 overflow-x-auto sm:grid sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-10 gap-4 flex sm:flex-none">
-        {loadingCategory
-          ? new Array(12).fill(null).map((_, index) => (
-              <div
-                key={index}
-                className="bg-white rounded-xl p-4 h-36 grid gap-2 shadow-md animate-pulse"
-              >
-                <div className="bg-green-100 h-20 rounded"></div>
-                <div className="bg-green-100 h-6 rounded"></div>
-              </div>
-            ))
-          : categoryData.map((cat) => {
-              const hasSubcategories = subCategoryData.some((sub) =>
-                sub.category.some((c) => c._id === cat._id)
-              );
-              if (!hasSubcategories) return null;
+      {/* Mobile Banner */}
+      <div className="lg:hidden w-full aspect-[2/1] relative overflow-hidden">
+        {mobileBanners.map((bannerImg, index) => (
+          <div
+            key={index}
+            className={`absolute inset-0 transition-all duration-500 ease-in-out ${
+              index === currentBannerIndex
+                ? "translate-x-0 opacity-100"
+                : "translate-x-full opacity-0"
+            }`}
+            style={{ willChange: "transform, opacity" }}
+          >
+            <img
+              src={bannerImg}
+              className="w-full h-full object-cover"
+              alt={`banner ${index + 1}`}
+              loading={index === 0 ? "eager" : "lazy"}
+              onError={(e) => {
+                e.target.onerror = null;
+                e.target.src = "https://i.postimg.cc/gkWpM52H/banner.png";
+              }}
+            />
+          </div>
+        ))}
 
-              return (
-                <div
-                  key={cat._id}
-                  className="cursor-pointer 
-      min-w-[80px] w-[80px] h-[100px] 
-      md:min-w-[100px] md:w-[100px] md:h-[120px] 
-      lg:min-w-[180px] lg:w-[120px] lg:h-[250px]
-      rounded-xl shadow-sm hover:shadow-md 
-      transition flex flex-col items-center justify-start text-center "
-                  onClick={() =>
-                    handleRedirectProductListpage(cat._id, cat.name)
-                  }
-                >
-                  <img
-                    src={cat.image}
-                    alt={cat.name}
-                    className="min-h-[30px] rounded "
-                  />
-                </div>
-              );
-            })}
+        {/* Pagination Dots */}
+        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10">
+          {mobileBanners.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => handleBannerChange(index)}
+              className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                index === currentBannerIndex
+                  ? "bg-green-600 scale-125 shadow-lg"
+                  : "bg-white/50 hover:bg-white/80"
+              }`}
+              aria-label={`Go to slide ${index + 1}`}
+              disabled={isTransitioning}
+            />
+          ))}
+        </div>
+
+        {/* Slide Controls */}
+        <div
+          className="absolute inset-y-0 left-0 w-1/3 z-10 cursor-pointer"
+          onClick={() =>
+            handleBannerChange(
+              currentBannerIndex === 0
+                ? mobileBanners.length - 1
+                : currentBannerIndex - 1
+            )
+          }
+        />
+        <div
+          className="absolute inset-y-0 right-0 w-1/3 z-10 cursor-pointer"
+          onClick={() =>
+            handleBannerChange((currentBannerIndex + 1) % mobileBanners.length)
+          }
+        />
       </div>
 
-      {categoryData?.map((c) => (
-        <CategoryWiseProductDisplay
-          key={c?._id + "CategorywiseProduct"}
-          id={c?._id}
-          name={c?.name}
-        />
-      ))}
+      {/* Category List */}
+      <div className="max-w-7xl mx-auto px-4 mt-6">
+        <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-10 gap-4">
+          {loadingCategory
+            ? new Array(10).fill(null).map((_, index) => (
+                <div
+                  key={index}
+                  className="bg-white rounded-xl p-4 h-[130px] flex flex-col items-center justify-center gap-2 shadow-md animate-pulse"
+                >
+                  <div className="bg-green-100 h-20 w-full rounded"></div>
+                  <div className="bg-green-100 h-4 w-3/4 rounded"></div>
+                </div>
+              ))
+            : categoryData.map((cat) => {
+                const hasSubcategories = subCategoryData.some((sub) =>
+                  sub.category.some((c) => c._id === cat._id)
+                );
+                if (!hasSubcategories) return null;
+
+                return (
+                  <div
+                    key={cat._id}
+                    className="cursor-pointer p-3 rounded-xl shadow-sm hover:shadow-md transition flex flex-col items-center justify-center text-center bg-white"
+                    onClick={() =>
+                      handleRedirectProductListpage(cat._id, cat.name)
+                    }
+                  >
+                    <img
+                      src={cat.image}
+                      alt={cat.name}
+                      className="h-20 w-20 object-contain rounded mb-2"
+                    />
+                    <p className="text-sm font-medium truncate">{cat.name}</p>
+                  </div>
+                );
+              })}
+        </div>
+      </div>
+
+      {/* Category-Wise Products */}
+      <div className="max-w-7xl mx-auto px-4 mt-10 space-y-10">
+        {categoryData?.map((c) => (
+          <CategoryWiseProductDisplay
+            key={c?._id + "CategorywiseProduct"}
+            id={c?._id}
+            name={c?.name}
+          />
+        ))}
+      </div>
     </section>
   );
 };

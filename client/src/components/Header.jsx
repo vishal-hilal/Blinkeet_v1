@@ -23,75 +23,66 @@ const Header = ({ openCartSection }) => {
 
   const redirectToLoginPage = () => navigate("/login");
   const handleCloseUserMenu = () => setOpenUserMenu(false);
-
   const handleMobileUser = () => {
     if (!user._id) return navigate("/login");
     navigate("/user");
   };
-
   const handleHomeClick = () => navigate("/", { replace: true });
 
   return (
-    <header className="sm:h-14 lg:h-20 w-full bg-white fixed flex items-top justify-between top-0 z-50 min-h-[100px] border-b shadow-sm">
+    <header className="fixed top-0 w-full z-50 bg-white border-b shadow-sm">
       {!(isSearchPage && isMobile) && (
-        <div className=" parentClass h-20 container mx-auto flex items-center justify-between lg:items-center lg:justify-between">
-          {/* Logo + Home */}
-          <div className=" flex items-center gap-6 lg:gap-12">
-            <Link to="/" className="flex items-center">
-              <img
-                src={logo}
-                alt="logo"
-                className="hidden lg:block w-[250px] h-auto"
-              />
-            </Link>
-            <button
-              onClick={handleHomeClick}
-              className=" hidden lg:block flex items-center gap-2 text-green-800 hover:text-green-700 px-3 py-2 rounded-md hover:bg-green-100 transition"
-            >
-              <div className="hidden lg:block flex">
-                <Home size={28} />
-              </div>
-              <span className="hidden lg:inline text-xl font-medium">Home</span>
-            </button>
-          </div>
-
-          {/* <div className=' smallMobile lg:hidden bg-blue-500 m-between flex items-center justify-evenly w-full '> */}
-          <div className="smallMobile lg:hidden w-full flex items-center justify-between gap-4">
+        <div className="container mx-auto flex items-center justify-between px-4 py-3 lg:py-5">
+          {/* Mobile View */}
+          <div className="lg:hidden w-full flex items-center justify-between gap-4">
             {/* Home Icon */}
-            <div className="shrink-0 ml-5 mt-2 md:ml-0">
-              <button onClick={handleHomeClick}>
-                <Home size={26} />
-              </button>
+            <button onClick={handleHomeClick} className="shrink-0 text-neutral-700">
+              <Home size={26} />
+            </button>
+
+            {/* Search Bar */}
+            <div className="flex-1 px-2">
+              <Search />
             </div>
 
             {/* User Icon */}
             <button
-              className="shrink-0 text-neutral-600 flex items-center"
+              className="shrink-0 text-neutral-600"
               onClick={handleMobileUser}
             >
-              <div className="pl-2">
-                <UserRound size={26} />
-              </div>
+              <UserRound size={26} />
             </button>
-            {/* Search (takes remaining space) */}
-            <div className="flex-1 mx-w-full ">
+          </div>
+
+          {/* Desktop View */}
+          <div className="hidden lg:flex items-center w-full gap-6">
+            {/* Logo */}
+            <div className="flex items-center gap-4">
+              <Link to="/" className="flex items-center">
+                <img
+                  src={logo}
+                  alt="logo"
+                  className="w-[180px] max-w-full h-auto"
+                />
+              </Link>
+              {/* Home */}
+              <button
+                onClick={handleHomeClick}
+                className="flex items-center gap-2 text-green-800 hover:text-green-700 px-3 py-2 rounded-md hover:bg-green-100 transition"
+              >
+                <Home size={24} />
+                <span className="text-lg font-medium">Home</span>
+              </button>
+            </div>
+
+            {/* Search */}
+            <div className="flex-1 max-w-3xl px-4">
               <Search />
             </div>
-          </div>
 
-          {/* Search (Desktop) */}
-          <div className="hidden lg:block lg:min-w-[1000px] lg:min-h-[50px] max-w-xl">
-            <Search />
-          </div>
-          {/* Search  Mobile */}
-          <div className="lg:hidden w-full max-w-md"></div>
-
-          {/* User + Cart */}
-          <div className="flex items-center gap-4">
-            {/* Mobile User Icon */}
-
-            {/* Desktop User + Cart */}
-            <div className="hidden lg:flex items-center gap-5">
+            {/* User + Cart */}
+            <div className="flex items-center gap-6 shrink-0">
+              {/* User / Login */}
               {user?._id ? (
                 <div className="relative">
                   <div
@@ -117,15 +108,14 @@ const Header = ({ openCartSection }) => {
               ) : (
                 <button
                   onClick={redirectToLoginPage}
-                  className="hidden lg:block flex items-center gap-2 text-green-800 hover:text-green-700 px-3 py-2 rounded-md hover:bg-green-100 transition"
+                  className="flex items-center gap-2 text-green-800 hover:text-green-700 px-3 py-2 rounded-md hover:bg-green-100 transition"
                 >
-                <UserRound size={26} />
-
-             <span className='text-xl'>Login</span>
+                  <UserRound size={26} />
+                  <span className="text-lg font-medium">Login</span>
                 </button>
               )}
 
-              {/* Cart Button */}
+              {/* Cart */}
               <button
                 onClick={() => openCartSection(true)}
                 className="flex items-center gap-2 bg-green-700 hover:bg-green-600 text-white px-4 py-2 rounded-xl transition shadow-sm"
