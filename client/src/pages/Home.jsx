@@ -136,44 +136,43 @@ const Home = () => {
         />
       </div>
 
-      {/* Category List */}
-      <div className="max-w-7xl mx-auto px-4 mt-6">
-        <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-10 gap-4">
-          {loadingCategory
-            ? new Array(10).fill(null).map((_, index) => (
-                <div
-                  key={index}
-                  className="bg-white rounded-xl p-4 h-[130px] flex flex-col items-center justify-center gap-2 shadow-md animate-pulse"
-                >
-                  <div className="bg-green-100 h-20 w-full rounded"></div>
-                  <div className="bg-green-100 h-4 w-3/4 rounded"></div>
-                </div>
-              ))
-            : categoryData.map((cat) => {
-                const hasSubcategories = subCategoryData.some((sub) =>
-                  sub.category.some((c) => c._id === cat._id)
-                );
-                if (!hasSubcategories) return null;
+      {/* Category List main conatainer */}
+     <div className="w-full px-4 mt-6 overflow-x-auto">
+  <div className="flex gap-4 whitespace-nowrap lg:grid grid-cols-8">
+    {loadingCategory
+      ? new Array(12).fill(null).map((_, index) => (
+          <div
+            key={index}
+            className="flex-shrink-0 bg-white rounded-xl p-4 w-[100px] h-[130px] flex flex-col items-center justify-center gap-2 shadow-md animate-pulse"
+          >
+            <div className="bg-green-100 h-20 w-full rounded"></div>
+            <div className="bg-green-100 h-4 w-3/4 rounded"></div>
+          </div>
+        ))
+      : categoryData.map((cat) => {
+          const hasSubcategories = subCategoryData.some((sub) =>
+            sub.category.some((c) => c._id === cat._id)
+          );
+          if (!hasSubcategories) return null;
 
-                return (
-                  <div
-                    key={cat._id}
-                    className="cursor-pointer p-3 rounded-xl shadow-sm hover:shadow-md transition flex flex-col items-center justify-center text-center bg-white"
-                    onClick={() =>
-                      handleRedirectProductListpage(cat._id, cat.name)
-                    }
-                  >
-                    <img
-                      src={cat.image}
-                      alt={cat.name}
-                      className="h-20 w-20 object-contain rounded mb-2"
-                    />
-                    <p className="text-sm font-medium truncate">{cat.name}</p>
-                  </div>
-                );
-              })}
-        </div>
-      </div>
+          return (
+            // category images in box 
+            <div
+              key={cat._id}
+              className="flex-shrink-0 cursor-pointer rounded-xl shadow-sm hover:shadow-xl border-1 transition flex flex-col items-center justify-center text-center w-[100px] h-[130px]"
+              onClick={() => handleRedirectProductListpage(cat._id, cat.name)}
+            >
+              <img
+                src={cat.image}
+                alt={cat.name}
+                className="h-30 w-20 object-contain rounded mb-2"
+              />
+            </div>
+          );
+        })}
+  </div>
+</div>
+
 
       {/* Category-Wise Products */}
       <div className="max-w-7xl mx-auto px-4 mt-10 space-y-10">
