@@ -237,8 +237,8 @@ export async function stripePaymentController(req, res) {
         },
       ],
       mode: "payment",
-      success_url: `${process.env.BACKEND_URL}+/success`, // backend url
-      cancel_url:`${process.env.BACKEND_URL}+/cancel`, // backend url
+      success_url:"https://blinkeet-v1-t58n.vercel.app/success", // backend url
+      cancel_url:"https://blinkeet-v1-t58n.vercel.app/cancel", // backend url
       metadata: {
         addressId: addressId,
         totalCartItems: cartItems.length,
