@@ -2,7 +2,6 @@ import dotenv from 'dotenv'
 dotenv.config()
 
 import express from 'express'
-import Stripe from 'stripe'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
 import morgan from 'morgan'
@@ -20,10 +19,9 @@ import orderRouter from './route/orderRoute.js'
 
 const app = express()
 
-
 app.set("view engine","ejs")
 app.use(cors({
-    origin: "https://blinkeet-v1.vercel.app",
+    origin:process.env.FRONTEND_URL,
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization']
@@ -60,7 +58,7 @@ app.get('/success', (req, res) => {
   const message = req.query.text || "Payment";
   res.render('success.ejs', { 
     text: message,
-    frontendUrl: 'https://blinkeet-v1.vercel.app'
+    frontendUrl:process.env.FRONTEND_URL
   });
 });
 
@@ -68,7 +66,7 @@ app.get('/cancel', (req, res) => {
   const message = req.query.text || "Payment";
   res.render('cancel.ejs', { 
     text: message,
-    frontendUrl:'https://blinkeet-v1.vercel.app'
+    frontendUrl:process.env.FRONTEND_URL
  });
 });
 

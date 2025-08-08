@@ -4,6 +4,9 @@ import UserModel from "../models/userModel.js";
 import mongoose from "mongoose";
 import AddressModel from "../models/addressModel.js";
 import Stripe from "stripe";
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 // cash on delivery controller
 export async function CashOnDeliveryOrderController(request, response) {
@@ -234,8 +237,8 @@ export async function stripePaymentController(req, res) {
         },
       ],
       mode: "payment",
-      success_url: "https://blinkeet-v2.onrender.com/success",
-      cancel_url: "https://blinkeet-v2.onrender.com/cancel",
+      success_url: `${process.env.BACKEND_URL}+/success`, // backend url
+      cancel_url:`${process.env.BACKEND_URL}+/cancel`, // backend url
       metadata: {
         addressId: addressId,
         totalCartItems: cartItems.length,

@@ -154,7 +154,7 @@ blinkit/
    CLOUDINARY_API_SECRET=your_cloudinary_api_secret
    STRIPE_SECRET_KEY=your_stripe_secret_key
    RESEND_API_KEY=your_resend_api_key
-   FRONTEND_URL=http://localhost:5173
+   FRONTEND_URL=your_frontend_url
 
 
 4. **Start the server**
@@ -204,7 +204,7 @@ STRIPE_SECRET_KEY=sk_test_your_stripe_secret_key
 RESEND_API_KEY=your_resend_api_key
 
 # Frontend URL
-FRONTEND_URL=http://localhost:5173
+FRONTEND_URL=your_frontend_url
 
 
 ## 📡 API Routes
