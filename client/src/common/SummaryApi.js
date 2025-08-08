@@ -1,4 +1,9 @@
-export const baseURL =import.meta.env.VITE_BACKEND_URL// backend server url
+import dotenv from 'dotenv'
+
+dotenv.config();
+
+export const baseURL =process.env.BACKEND_URL   // backend server url
+                                                    
 
 const SummaryApi = {
     register : {
