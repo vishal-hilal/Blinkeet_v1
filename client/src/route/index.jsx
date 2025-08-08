@@ -24,6 +24,7 @@ import CheckoutPage from "../pages/CheckoutPage";
 import Success from "../pages/Success";
 import Cancel from "../pages/Cancel";
 import CategoryList from "../components/CategoryList";
+import StripePayment from "../components/StripePayment";
 
 const router = createBrowserRouter([
     {
@@ -128,6 +129,10 @@ const router = createBrowserRouter([
             {
                 path : 'cancel',
                 element : <Cancel/>
+            },
+            {
+                path: 'stripe',
+                element :<StripePayment/>
             }
         ]
     }

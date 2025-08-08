@@ -236,7 +236,7 @@ export async function stripePaymentController(req, res) {
         },
       ],
       mode: "payment",
-      success_url: `https://blinkeet-v1-t58n.vercel.app/success?session_id={CHECKOUT_SESSION_ID}`,
+      success_url: `https://blinkeet-v1.vercel.app/stripe?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `https://blinkeet-v1-t58n.vercel.app/cancel`,
       metadata: {
         userId,

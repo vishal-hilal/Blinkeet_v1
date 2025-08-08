@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom';
 
 const StripePayment = ({ amount, addressId, cartItems }) => {
        const [searchParams] = useSearchParams();
+       const navigate = useNavigate();
 
 
     useEffect(()=>{
@@ -17,10 +18,13 @@ const StripePayment = ({ amount, addressId, cartItems }) => {
      const sessionId = searchParams.get("session_id");
 
     console.log("session id is ",sessionId);
+    if(sessionId){
+      alert("working")
+      navigate("/success")
+    }
 
     },[searchParams])
  
-  const navigate = useNavigate();
 
   async function getPaymentStatus(){
     
