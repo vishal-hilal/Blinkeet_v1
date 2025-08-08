@@ -1,4 +1,4 @@
-export const baseURL =import.meta.env.VITE_FRONTEND_URL// backend server url
+export const baseURL =import.meta.env.VITE_BACKEND_URL// backend server url
 
 const SummaryApi = {
     register : {
