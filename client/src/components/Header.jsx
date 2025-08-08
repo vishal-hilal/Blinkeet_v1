@@ -39,19 +39,19 @@ const Header = ({ openCartSection }) => {
             <button onClick={handleHomeClick} className="shrink-0 text-neutral-700">
               <Home size={26} />
             </button>
-
-            {/* Search Bar */}
-            <div className="flex-1 px-2">
-              <Search />
-            </div>
-
-            {/* User Icon */}
+            
+             {/* User Icon */}
             <button
               className="shrink-0 text-neutral-600"
               onClick={handleMobileUser}
             >
               <UserRound size={26} />
             </button>
+
+            {/* Search Bar */}
+            <div className="flex-1 px-2">
+              <Search />
+            </div>
           </div>
 
           {/* Desktop View */}
