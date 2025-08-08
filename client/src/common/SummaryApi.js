@@ -1,4 +1,6 @@
+// export const baseURL ="https://blinkeet-v1-t58n.vercel.app"  // backend server url
 export const baseURL ="https://blinkeet-v1-t58n.vercel.app"  // backend server url
+
                                                     
 
 const SummaryApi = {
@@ -146,6 +148,10 @@ const SummaryApi = {
         url : "/api/order/cash-on-delivery",
         method : 'post'
     },
+    payment_status:{
+        url:"api/order/payment-status",
+        method:'get'
+    },
     payment_url : {
         url : "/api/order/checkout",
         method : 'post'
@@ -153,6 +159,11 @@ const SummaryApi = {
 
       stripe_create_intent: {
     url: '/api/order/create-payment-intent',
+    method: 'post',
+  },
+
+  stripe_webhook:{
+    url: '/api/order/webhook',
     method: 'post',
   },
 

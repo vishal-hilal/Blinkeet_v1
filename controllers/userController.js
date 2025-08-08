@@ -475,13 +475,8 @@ export async function refreshToken(request,response){
 export async function userDetails(request,response){
     try {
         const userId  = request.userId
-
-        console.log("user id is ", userId);
-
         const user = await UserModel.findById(userId).select('-password -refresh_token')
-
-        console.log("user Details", user);
-
+        
         return response.json({
             message : 'user details',
             data : user,

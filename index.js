@@ -19,13 +19,21 @@ import orderRouter from './route/orderRoute.js'
 
 const app = express()
 
+
 app.set("view engine","ejs")
 app.use(cors({
-    origin:process.env.FRONTEND_URL,
+    // origin:process.env.FRONTEND_URL,
+    origin:"https://blinkeet-v1.vercel.app",
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization']
 }))
+
+app.use(
+  "/api/order/webhook",
+  express.raw({ type: "application/json" })
+);
+
 app.use(express.json())
 app.use(cookieParser())
 app.use(morgan("dev"))

@@ -4,16 +4,18 @@ import UserModel from "../models/userModel.js";
 import mongoose from "mongoose";
 import AddressModel from "../models/addressModel.js";
 import Stripe from "stripe";
-import dotenv from 'dotenv';
+import dotenv from "dotenv";
 
 dotenv.config();
+
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 // cash on delivery controller
 export async function CashOnDeliveryOrderController(request, response) {
   try {
     const userId = request.userId; // auth middleware
 
-    console.log("cash on delivery userid", userId);
+    console.log("the user id for cash on delivery is", userId);
     const { list_items, totalAmt, addressId, subTotalAmt } = request.body;
 
     const payload = list_items.map((el) => {
@@ -170,7 +172,7 @@ export async function paymentController(request, response) {
         upi: {
           mandate_options: {
             reference: `UPI-${Date.now()}`,
-            amount: totalAmt * 100,
+            amount: totalAmt * 100, // here we are multipying amout with 100 to convert it to paisa
             currency: "inr",
             description: `Purchase of ${description}`,
           },
@@ -214,12 +216,11 @@ export async function getOrderDetailsController(request, response) {
 
 // this is stripe payent route
 export async function stripePaymentController(req, res) {
-  // here we have to  load stripe secret key first
-  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
-
   const { amount, addressId, cartItems } = req.body;
   const userId = req.userId;
 
+      const orderItems = await CartProductModel.find({ userId }).populate("productId");
+     
 
   try {
     const session = await stripe.checkout.sessions.create({
@@ -228,34 +229,128 @@ export async function stripePaymentController(req, res) {
         {
           price_data: {
             currency: "inr",
-            product_data: {
-              name: "Grocery Order",
-            },
-            unit_amount: amount * 100, //  should be in paisa (e.g. 49900 = ₹499) hence multiplying with 100
+            product_data: { name: "Grocery Order" },
+            unit_amount: amount * 100,
           },
           quantity: 1,
         },
       ],
       mode: "payment",
-      // success_url:"https://blinkeet-v1-t58n.vercel.app/success", // backend url
-      // cancel_url:"https://blinkeet-v1-t58n.vercel.app/cancel", // backend url
-      success_url:"https://blinkeet-v1.vercel.app/success", // frontend url
-      cancel_url:"https://blinkeet-v1.vercel.app/cancel", // frontend url
+      success_url: `https://blinkeet-v1-t58n.vercel.app/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `https://blinkeet-v1-t58n.vercel.app/cancel`,
       metadata: {
-        addressId: addressId,
+        userId,
+        addressId,
+        checkoutId:`{CHECKOUT_SESSION_ID}`,
         totalCartItems: cartItems.length,
       },
     });
 
-    const remveCart = await CartProductModel.deleteMany({ userId: userId });
-    const removeUser = await UserModel.findByIdAndUpdate(userId, {
-      shopping_cart: [],
-    });
+      const orderData = orderItems.map((item) => ({
+        userId,
+        orderId: `ORD-${new mongoose.Types.ObjectId()}`,
+        productId: item.productId._id,
+        product_details: { name: item.productId.name, image: item.productId.image },
+        paymentId: session.payment_intent,
+        payment_status: "PAID",
+        delivery_address: addressId,
+        subTotalAmt: item.productId.price * item.quantity,
+        totalAmt: session.amount_total / 100,
+        quantity: item.quantity,
+      }));
 
-    return res.json({ url: session.url, success: true, error: false});
+      await OrderModel.insertMany(orderData);
+        await CartProductModel.deleteMany({ userId: userId });
+        await UserModel.findByIdAndUpdate(userId, { shopping_cart: [] });
+
+      console.log(`✅ Order created for user ${userId}`);
+
+
+    return res.json({ url: session.url, id:session.id, metadata:session.metadata, success: true });
   } catch (err) {
-    console.log("the error is ", err);
-    return res.status(500).json({ error: err.message});
+    console.log("Stripe Error:", err);
+    return res.status(500).json({ error: err.message });
   }
+}
+
+
+
+
+
+export async function getPaymentDetails(request,response){
+
+const userId = request.userId;
+
+const latestOrder = await OrderModel
+  .findOne({ userId })
+  .sort({ createdAt: -1 }); // newest first
+
+if (!latestOrder) {
+  return response.status(404).json({ message: "No orders found" });
+}
+
+return response.json({
+  orderId: latestOrder.orderId,
+  payment_status: latestOrder.payment_status
+});
+
+
+    // const paymentDetails = orderlist.forEach((item)=>{
+    //   console.log(item.payment_status)
+    // })
+
+    // return response.json({message:"payment status fetched successfully",paymentStatus});
+
+
+}
+
+
+
+
+
+
+
+export async function stripeWebhookController(req, res) {
+  const sig = req.headers["stripe-signature"];
+  let event;
+
+  try {
+    event = stripe.webhooks.constructEvent(req.body, sig, process.env.STRIPE_WEBHOOK_SECRET);
+  } catch (err) {
+    console.error("Webhook signature verification failed:", err.message);
+    return res.status(400).send(`Webhook Error: ${err.message}`);
+  }
+
+  if (event.type === "checkout.session.completed") {
+    const session = event.data.object;
+    const { userId, addressId } = session.metadata;
+
+    try {
+      const cartItems = await CartProductModel.find({ userId }).populate("productId");
+
+      const orderData = cartItems.map((item) => ({
+        userId,
+        orderId: `ORD-${new mongoose.Types.ObjectId()}`,
+        productId: item.productId._id,
+        product_details: { name: item.productId.name, image: item.productId.image },
+        paymentId: session.payment_intent,
+        payment_status: "PAID",
+        delivery_address: addressId,
+        subTotalAmt: item.productId.price * item.quantity,
+        totalAmt: session.amount_total / 100,
+        quantity: item.quantity,
+      }));
+
+      await OrderModel.insertMany(orderData);
+      await CartProductModel.deleteMany({ userId });
+      await UserModel.findByIdAndUpdate(userId, { shopping_cart: [] });
+
+      console.log(`✅ Order created for user ${userId}`);
+    } catch (err) {
+      console.error("Error creating order after payment:", err);
+    }
+  }
+
+  res.json({ received: true });
 }
 
