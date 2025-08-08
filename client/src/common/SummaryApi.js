@@ -1,4 +1,4 @@
-export const baseURL =import.meta.env.VITE_BACKEND_URL   // backend server url
+export const baseURL ="https://blinkeet-v1-t58n.vercel.app"  // backend server url
                                                     
 
 const SummaryApi = {
