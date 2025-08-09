@@ -80,8 +80,7 @@ const ProductAdmin = () => {
     <section className="w-full">
       {/* Top Bar */}
       <div className="p-4 bg-white lg:mt-28 sm:mt-12 shadow-sm border-b flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <h2 className="text-xl font-semibold text-gray-800">Manage Products</h2>
-
+        <h2 className="sm:hidden text-xl font-semibold text-gray-800">Manage Products</h2>
         <div className="flex items-center gap-2 bg-gray-100 px-3 py-2 rounded-md w-full sm:w-72 border border-gray-300 focus-within:ring-2 ring-green-500">
           <IoSearchOutline size={20} className="text-gray-500" />
           <input
