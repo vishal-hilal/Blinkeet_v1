@@ -170,7 +170,7 @@ const ProductDisplayPage = () => {
   {/* Left: Image section */}
   <div className='space-y-4'>
     {/* Main Image */}
-    <div className='bg-white rounded-xl overflow-hidden shadow-md min-h-56 max-h-56 sm:min-h-[40vh] sm:max-h-[40vh] lg:min-h-[65vh] lg:max-h-[65vh] flex items-center justify-center'>
+    <div className='bg-white mt-24 rounded-xl overflow-hidden shadow-md min-h-56 max-h-56 sm:min-h-[40vh] sm:max-h-[40vh] lg:min-h-[65vh] lg:max-h-[65vh] flex items-center justify-center'>
       {data.image[image] && (
         <img
           src={data.image[image]}

@@ -65,7 +65,7 @@ const Home = () => {
       {/* Desktop Banner */}
       <div className="hidden lg:block">
         <div className="max-w-7xl mx-auto px-4">
-          <div className="rounded-2xl overflow-hidden shadow-md bg-gradient-to-r from-green-50 to-green-100">
+          <div className="rounded-2xl lg:mt-10 overflow-hidden shadow-md bg-gradient-to-r from-green-50 to-green-100">
             <img
               src={banner}
               className="w-full h-[320px] object-cover"

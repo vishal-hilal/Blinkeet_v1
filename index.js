@@ -66,7 +66,7 @@ app.get('/success', (req, res) => {
   const message = req.query.text || "Payment";
   res.render('success.ejs', { 
     text: message,
-    frontendUrl:process.env.FRONTEND_URL
+    frontendUrl:"https://blinkeet-v1.vercel.app"
   });
 });
 
@@ -74,7 +74,7 @@ app.get('/cancel', (req, res) => {
   const message = req.query.text || "Payment";
   res.render('cancel.ejs', { 
     text: message,
-    frontendUrl:process.env.FRONTEND_URL
+    frontendUrl:"https://blinkeet-v1.vercel.app"
  });
 });
 

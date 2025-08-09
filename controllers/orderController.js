@@ -236,8 +236,8 @@ export async function stripePaymentController(req, res) {
         },
       ],
       mode: "payment",
-      success_url: `https://blinkeet-v1.vercel.app/stripe?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `https://blinkeet-v1-t58n.vercel.app/cancel`,
+      success_url: `https://blinkeet-v2.onrender.com/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `https://blinkeet-v2.onrender.com/cancel`,
       metadata: {
         userId,
         addressId,
@@ -275,7 +275,7 @@ export async function stripePaymentController(req, res) {
 
 
 
-
+// get payment status from the database after stripe successful payment
 
 export async function getPaymentDetails(request,response){
 
@@ -294,20 +294,7 @@ return response.json({
   payment_status: latestOrder.payment_status
 });
 
-
-    // const paymentDetails = orderlist.forEach((item)=>{
-    //   console.log(item.payment_status)
-    // })
-
-    // return response.json({message:"payment status fetched successfully",paymentStatus});
-
-
 }
-
-
-
-
-
 
 
 export async function stripeWebhookController(req, res) {

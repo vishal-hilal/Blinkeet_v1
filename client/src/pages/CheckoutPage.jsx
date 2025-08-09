@@ -69,7 +69,7 @@ const CheckoutPage = () => {
 
   return (
     <section className="bg-blue-50 min-h-screen py-8">
-  <div className="container mx-auto px-4 flex flex-col lg:flex-row gap-6">
+  <div className="container mx-auto px-4 flex mt-14 lg:mt-28 flex-col lg:flex-row gap-6">
     {/* Left: Address Section */}
     <div className="w-full">
       <h3 className="text-xl font-semibold mb-4 text-gray-800">Choose your Address</h3>
@@ -115,7 +115,7 @@ const CheckoutPage = () => {
     </div>
 
     {/* Right: Summary + Payment */}
-    <div className="w-full max-w-md space-y-5">
+    <div className="w-full lg:mt-11 max-w-md space-y-5">
       {/* Order Summary */}
       <div className="bg-white rounded-2xl shadow-md p-5">
         <h3 className="text-xl font-semibold mb-4 text-gray-800">Order Summary</h3>

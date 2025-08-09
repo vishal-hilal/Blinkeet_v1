@@ -75,6 +75,11 @@ export const getProductController = async(request,response)=>{
         const skip = (page - 1) * limit
 
         try {
+
+            const totalProducts = await ProductModel.find();
+
+            const productLength = totalProducts.length
+
             const [data, totalCount] = await Promise.all([
                 ProductModel.find(query)
                     .sort(search ? { score: { $meta: "textScore" } } : { createdAt: -1 })
@@ -84,12 +89,13 @@ export const getProductController = async(request,response)=>{
                 ,ProductModel.countDocuments(query)
             ])
 
+
             return response.json({
                 message: "Product data",
                 error: false,
                 success: true,
-                totalCount: totalCount,
-                totalNoPage: Math.ceil(totalCount / limit),
+                totalCount: productLength,
+                totalNoPage: Math.ceil(productLength / limit),
                 data: data
             })
         } catch (dbError) {
