@@ -160,12 +160,18 @@ const AddToCartButton = ({ data, size="md" }) => {
           </button>
         </div>
       ) : (
+        <div> 
+          
         <button
           onClick={handleADDTocart}
           className={`w-full ${isSmall ? 'h-8 text-xs' : 'h-11 text-sm'} bg-green-600  text-white font-bold rounded-full px-4`}
         >
-          {loading ? <Loading /> : 'Add'}
+          ADD
         </button>
+          <div className="">
+          {loading && <Loading/>} 
+            </div>
+        </div>   
       )
     }
   </div>

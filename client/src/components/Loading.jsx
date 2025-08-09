@@ -2,7 +2,7 @@ import React from 'react'
 
 const Loading = () => {
   return (
-    <div className="flex justify-center items-center min-h-40">
+    <div className="flex justify-center mt-2 items-center min-h-8">
       <div role="status" className="flex flex-col items-center gap-2">
         <svg
           aria-hidden="true"
@@ -48,7 +48,6 @@ const Loading = () => {
             fill="currentFill"
           />
         </svg>
-        <span className="text-sm text-gray-600 dark:text-gray-400">Loading...</span>
       </div>
     </div>
   )

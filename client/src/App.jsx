@@ -79,7 +79,7 @@ function App() {
         <Footer />
       </div>
 
-      <Toaster position="top-right" toastOptions={{ duration: 3000 }} />
+      <Toaster position="top-center" toastOptions={{ duration: 3000 }} />
 
       {location.pathname !== '/checkout' && (
         <CartMobileLink openCartSection={() => setOpenCartSection(true)} />

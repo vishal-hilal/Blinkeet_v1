@@ -129,7 +129,7 @@ const ProductListPage = () => {
     <section className='sticky top-24 lg:top-20'>
       <div className='container mx-auto grid grid-cols-[90px,1fr] md:grid-cols-[200px,1fr] lg:grid-cols-[260px,1fr] gap-4 px-2'>
         {/* Sidebar - Subcategories */}
-        <div className='min-h-[88vh] max-h-[88vh] overflow-y-scroll rounded-lg shadow border bg-white py-3 scrollbar-thin scrollbar-thumb-slate-300 scrollbar-track-transparent'>
+        <div className='min-h-[88vh] mt-20 lg:mt-36 max-h-[88vh] overflow-y-scroll rounded-lg shadow border bg-white py-3 scrollbar-thin scrollbar-thumb-slate-300 scrollbar-track-transparent'>
           {DisplaySubCatory.map((subCategory) => {
             const link = `/${valideURLConvert(subCategory?.category[0]?.name)}-${subCategory?.category[0]?._id}/${valideURLConvert(subCategory.name)}-${subCategory._id}`
             return (
@@ -152,12 +152,13 @@ const ProductListPage = () => {
         </div>
 
         {/* Product Display */}
-        <div className='sticky top-20'>
+        <div className='sticky lg:mt-20 top-20'>
           <div className='bg-white shadow rounded-md px-4 py-3 mb-2'>
             <h3 className='font-semibold text-lg text-slate-700'>{subCategoryName}</h3>
           </div>
 
-          <div className='min-h-[80vh] max-h-[80vh] overflow-y-auto scrollbar-thin scrollbar-thumb-slate-300'>
+            {/* total products display after clicking see all */}
+          <div className='min-h-[80vh] mt-8 lg:mt-0 max-h-[80vh] overflow-y-auto scrollbar-thin scrollbar-thumb-slate-300'>
             <div className='grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 px-4'>
               {data.map((product) => (
                 <CardProduct
